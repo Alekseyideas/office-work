@@ -1,0 +1,68 @@
+[
+  {
+    "id": 100,
+    "email": "mostapenko@mcfr.ua",
+    "fio": "Марина Остапенко",
+    "department": "Маркетинг-дирекція",
+    "position": "Фахівець з актуалізації баз даних",
+    "dateReserve": "2021-02-11T22:00:00Z",
+    "numberTable": 10,
+    "typeId": 1,
+    "status": 1
+  },
+  {
+    "id": 9723,
+    "email": "ytimoshchuk@mcfr.ua",
+    "fio": "Юлія Тимощук",
+    "department": "ЦП Київ",
+    "position": "Фахівець з контролю якості дзвінків",
+    "dateReserve": "2021-02-25T22:00:00Z",
+    "numberTable": 7,
+    "typeId": 1,
+    "status": 1
+  },
+  {
+    "id": 9724,
+    "email": "gmelnik@mcfr.ua",
+    "fio": "Галина Мельник",
+    "department": "ЦП Київ",
+    "position": "Провідний фахівець по роботі з клієнтами",
+    "dateReserve": "2021-02-21T22:00:00Z",
+    "numberTable": 12,
+    "typeId": 1,
+    "status": 1
+  },
+  {
+    "id": 9725,
+    "email": "ttopolnitska@mcfr.ua",
+    "fio": "Тетяна Топольницька",
+    "department": "ЦП Житомир",
+    "position": "Фахівець по роботі з клієнтами",
+    "dateReserve": "2021-02-21T22:00:00Z",
+    "numberTable": 9,
+    "typeId": 1,
+    "status": 1
+  },
+  {
+    "id": 9726,
+    "email": "epavlusenko@mcfr.ua",
+    "fio": "Олена Павлусенко",
+    "department": "ЦП Київ",
+    "position": "Провідний фахівець по роботі з клієнтами",
+    "dateReserve": "2021-02-21T22:00:00Z",
+    "numberTable": 10,
+    "typeId": 1,
+    "status": 1
+  },
+  {
+    "id": 97261,
+    "email": "epavlusenko@mcfr.ua",
+    "fio": "Олена Павлусенко",
+    "department": "ЦП Київ",
+    "position": "Провідний фахівець по роботі з клієнтами",
+    "dateReserve": "2021-02-21T22:00:00Z",
+    "numberTable": 32,
+    "typeId": 1,
+    "status": 1
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "id": 100,
+  "email": "test@test.com",
+  "fio": "Петров Петр Владимирович",
+  "department": "HR",
+  "position": "Менеджер",
+  "dateReserve": "2021-02-17",
+  "numberTable": 10,
+  "typeId": 1,
+  "status": 1
+}
