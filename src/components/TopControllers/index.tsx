@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Store } from '../../store';
+import { StoreAction } from '../../store/StoreAction';
+import { IStore } from '../../store/types';
 import { ButtonDefault, Select } from '../ui';
 import { useLogic } from './useLogic';
 
 interface TopControllersProps {}
 
 export const TopControllers: React.FC<TopControllersProps> = React.memo(({}) => {
+  const { dispatch } = React.useContext<IStore>(Store);
+  const Actions = new StoreAction(dispatch);
   const {
     departments,
     employees,
@@ -19,7 +24,7 @@ export const TopControllers: React.FC<TopControllersProps> = React.memo(({}) => 
   return (
     <WrapperS>
       <BtnsWrapperS>
-        <ButtonDefault title="Створити заявку" onClick={() => console.log(1111)} />
+        <ButtonDefault title="Створити заявку" onClick={() => Actions.setPage('createRequest')} />
         <ButtonDefault title="Мої Заявки" onClick={() => console.log(1111)} />
       </BtnsWrapperS>
       <SelectsWrapperS>

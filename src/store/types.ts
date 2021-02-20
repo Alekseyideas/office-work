@@ -21,6 +21,7 @@ export interface IState {
   user: IUser | null;
   users: IUser[];
   modal: IModal;
+  page: 'home' | 'createRequest';
   readonly errors?: string | undefined;
   readonly loading: boolean;
 }
@@ -48,4 +49,5 @@ export enum EActionTypes {
   SET_USER = 'SET_USER',
   SET_USERS = 'SET_USERS',
   SET_MODAL = 'SET_MODAL',
+  SET_PAGE = 'SET_PAGE',
 }

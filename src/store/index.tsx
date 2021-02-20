@@ -7,6 +7,7 @@ const initialState: IState = {
   users: [],
   loading: false,
   modal: initialModalState,
+  page: 'home',
 };
 
 export const Store = React.createContext<IStore>({

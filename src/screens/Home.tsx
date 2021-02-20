@@ -1,12 +1,13 @@
 import moment from 'moment';
 import 'moment/locale/uk';
 import React from 'react';
-import { Calendar, EventProps, momentLocalizer } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CustomToolbar } from '../components/CustomToolbar';
+import { Detailing } from '../components/Modals';
 import { TopControllers } from '../components/TopControllers';
 import { Store } from '../store';
-import { IStore } from '../store/types';
+import { IStore, IUser } from '../store/types';
 const localizer = momentLocalizer(moment);
 const navigate = {
   PREVIOUS: 'PREV',
@@ -21,16 +22,14 @@ interface IEvent {
   count: number;
   start: Date;
   end: Date;
+  idDate: string;
 }
-
-const MonthEvent = (data: EventProps) => {
-  console.log(data, 'data');
-  return <div>{1}</div>;
-};
 
 export const Home: React.FC<HomeProps> = () => {
   const { store } = React.useContext<IStore>(Store);
   const [events, setEvents] = React.useState<IEvent[]>([]);
+  const [isShowDayInfo, setIsShowDayInfo] = React.useState(false);
+  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
 
   React.useEffect(() => {
     if (store.users && Array.isArray(store.users) && store.users[0]) {
@@ -51,12 +50,23 @@ export const Home: React.FC<HomeProps> = () => {
           count: cash[key],
           start: new Date(key),
           end: new Date(key),
+          idDate: key,
         });
       }
 
       setEvents(dates);
     }
   }, [store.users]);
+
+  const clickEventHandler = (event: IEvent) => {
+    const users =
+      (store.users &&
+        Array.isArray(store.users) &&
+        store.users.filter((user) => String(user.dateReserve) === String(event.idDate))) ||
+      [];
+    setFilteredUsers(users);
+    setIsShowDayInfo(true);
+  };
 
   return (
     <>
@@ -67,23 +77,32 @@ export const Home: React.FC<HomeProps> = () => {
           events={events}
           components={{
             month: {
-              event: ({ event }) => <div>{event.count}</div>,
+              event: ({ event }) => <span>{event.count}</span>,
             },
 
             toolbar: CustomToolbar,
           }}
-          onSelectSlot={(slot) => console.log(slot)}
-          onSelectEvent={(slot) => console.log(slot)}
+          onSelectSlot={(slot) => null}
+          onSelectEvent={clickEventHandler}
           defaultView="month"
           views={['month']}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ minHeight: 700 }}
           onShowMore={() => console.log(111)}
           onNavigate={(e) => console.log(e)}
-          timeslots={300}
         />
       </div>
+      {!isShowDayInfo ? null : (
+        <Detailing
+          data={filteredUsers}
+          title="Деталізація"
+          closeHandler={() => {
+            setIsShowDayInfo(false);
+            setFilteredUsers([]);
+          }}
+        />
+      )}
     </>
   );
 };

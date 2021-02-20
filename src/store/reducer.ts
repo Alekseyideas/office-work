@@ -28,6 +28,11 @@ export default function reducer(state: IState, action: IAction): IState {
         ...state,
         modal: action.payload,
       };
+    case EActionTypes.SET_PAGE:
+      return {
+        ...state,
+        page: action.payload,
+      };
 
     default:
       return state;

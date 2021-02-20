@@ -24,6 +24,8 @@ const WrapperS = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
 `;
 
 const LabelS = styled.h3`
