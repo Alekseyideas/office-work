@@ -6,15 +6,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CustomToolbar } from '../components/CustomToolbar';
 import { Detailing, MyRequests } from '../components/Modals';
 import { TopControllers } from '../components/TopControllers';
+import { useApi } from '../hooks/useApi';
 import { Store } from '../store';
 import { IStore, IUser } from '../store/types';
 const localizer = momentLocalizer(moment);
-const navigate = {
-  PREVIOUS: 'PREV',
-  NEXT: 'NEXT',
-  TODAY: 'TODAY',
-  DATE: 'DATE',
-};
+
 interface HomeProps {}
 
 interface IEvent {
@@ -28,50 +24,64 @@ interface IEvent {
 export const Home: React.FC<HomeProps> = () => {
   const { store } = React.useContext<IStore>(Store);
   const [events, setEvents] = React.useState<IEvent[]>([]);
+  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
   const [isShowDayInfo, setIsShowDayInfo] = React.useState(false);
   const [isShowMyRequests, setIsShowMyRequests] = React.useState(false);
-  const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
+  const [selectedDayUsers, setSelectedDayUsers] = React.useState<IUser[]>([]);
+  const { getUsers } = useApi();
+
+  const renderEvents = React.useCallback((data: IUser[]) => {
+    const dates: IEvent[] = [];
+    const cash: { [key: string]: number } = {};
+
+    data.forEach((user) => {
+      if (!cash[String(user.dateReserve)]) {
+        cash[String(user.dateReserve)] = 1;
+      } else {
+        cash[String(user.dateReserve)] += 1;
+      }
+    });
+
+    for (let key in cash) {
+      dates.push({
+        title: '',
+        count: cash[key],
+        start: new Date(key),
+        end: new Date(key),
+        idDate: key,
+      });
+    }
+
+    setEvents(dates);
+  }, []);
 
   React.useEffect(() => {
     if (store.users && Array.isArray(store.users) && store.users[0]) {
-      const dates: IEvent[] = [];
-      const cash: { [key: string]: number } = {};
-
-      store.users.forEach((user) => {
-        if (!cash[String(user.dateReserve)]) {
-          cash[String(user.dateReserve)] = 1;
-        } else {
-          cash[String(user.dateReserve)] += 1;
-        }
-      });
-
-      for (let key in cash) {
-        dates.push({
-          title: '',
-          count: cash[key],
-          start: new Date(key),
-          end: new Date(key),
-          idDate: key,
-        });
-      }
-
-      setEvents(dates);
+      setFilteredUsers(store.users);
     }
-  }, [store.users]);
+  }, [store.users, renderEvents]);
+
+  React.useEffect(() => {
+    if (filteredUsers && Array.isArray(filteredUsers)) {
+      renderEvents(filteredUsers);
+    }
+  }, [filteredUsers, renderEvents]);
 
   const clickEventHandler = (event: IEvent) => {
     const users =
-      (store.users &&
-        Array.isArray(store.users) &&
-        store.users.filter((user) => String(user.dateReserve) === String(event.idDate))) ||
+      (filteredUsers[0] &&
+        filteredUsers.filter((user) => String(user.dateReserve) === String(event.idDate))) ||
       [];
-    setFilteredUsers(users);
+    setSelectedDayUsers(users);
     setIsShowDayInfo(true);
   };
 
   return (
     <>
-      <TopControllers showMyRequestsHandler={() => setIsShowMyRequests(true)} />
+      <TopControllers
+        filterHandler={setFilteredUsers}
+        showMyRequestsHandler={() => setIsShowMyRequests(true)}
+      />
       <div>
         <Calendar
           localizer={localizer}
@@ -83,15 +93,18 @@ export const Home: React.FC<HomeProps> = () => {
 
             toolbar: CustomToolbar,
           }}
-          onSelectSlot={(slot) => null}
+          onSelectSlot={() => null}
           onSelectEvent={clickEventHandler}
           defaultView="month"
           views={['month']}
           startAccessor="start"
           endAccessor="end"
           style={{ minHeight: 700 }}
-          onShowMore={() => console.log(111)}
-          onNavigate={(e) => console.log(e)}
+          onShowMore={() => null}
+          onNavigate={(e) => {
+            const monthNum = moment(e).format('MM');
+            getUsers(monthNum);
+          }}
         />
       </div>
 
@@ -105,11 +118,11 @@ export const Home: React.FC<HomeProps> = () => {
       )}
       {!isShowDayInfo ? null : (
         <Detailing
-          data={filteredUsers}
+          data={selectedDayUsers}
           title="Деталізація"
           closeHandler={() => {
             setIsShowDayInfo(false);
-            setFilteredUsers([]);
+            setSelectedDayUsers([]);
           }}
         />
       )}

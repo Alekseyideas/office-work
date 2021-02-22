@@ -1,10 +1,10 @@
 import React from 'react';
 import { Store } from '../../store';
-import { IStore } from '../../store/types';
+import { IStore, IUser } from '../../store/types';
 import { ISelectData } from '../ui/Select';
 import { EmplDepSelect } from './helpers';
 
-export const useLogic = () => {
+export const useLogic = (filterHandler: (users: IUser[]) => void) => {
   const { store } = React.useContext<IStore>(Store);
   const [departments, setDepartments] = React.useState<ISelectData[]>([]);
   const [currentDep, setCurrentDep] = React.useState<ISelectData | null>(null);
@@ -20,6 +20,25 @@ export const useLogic = () => {
       setEmployees(employeesSelect);
     }
   }, [store.users]);
+
+  React.useEffect(() => {
+    if (currentDep || currentEmp) {
+      const users = store.users.filter((userInner) => {
+        if (currentDep && currentDep.id !== 0 && currentEmp && currentEmp.id !== 0) {
+          return userInner.department === currentDep.title && userInner.fio === currentEmp.title;
+        }
+        if (currentDep && currentDep.id !== 0) {
+          return userInner.department === currentDep.title;
+        }
+        if (currentEmp && currentEmp.id !== 0) {
+          return userInner.fio === currentEmp.title;
+        }
+        return true;
+      });
+
+      filterHandler(users);
+    }
+  }, [currentDep, currentEmp, store.users]);
 
   return {
     departments,

@@ -6,7 +6,7 @@ export const WrapperS = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: ${BORDER_RADIUS};
-  max-width: 900px;
+  max-width: 700px;
 `;
 
 export const TitleS = styled.h4`
@@ -77,7 +77,7 @@ export const DateWrapperS = styled.div`
 
 export const WrapperTextS = styled.div`
   text-align: center;
-  font-size: 23px;
+  font-size: 16px;
 `;
 
 export const TitleImageS = styled.div`

@@ -11,7 +11,7 @@ export interface IUser {
   fio: string;
   department: string;
   position: string;
-  dateReserve: Date;
+  dateReserve: Date | string;
   numberTable: number;
   typeId: number;
   status: number;

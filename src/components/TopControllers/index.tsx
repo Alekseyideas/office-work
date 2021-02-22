@@ -2,16 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { Store } from '../../store';
 import { StoreAction } from '../../store/StoreAction';
-import { IStore } from '../../store/types';
+import { IStore, IUser } from '../../store/types';
 import { ButtonDefault, Select } from '../ui';
 import { useLogic } from './useLogic';
 
+export type TFilter = 'department' | 'employee';
+
 interface TopControllersProps {
-  showMyRequestsHandler?: () => void;
+  showMyRequestsHandler: () => void;
+  filterHandler: (users: IUser[]) => void;
 }
 
 export const TopControllers: React.FC<TopControllersProps> = React.memo(
-  ({ showMyRequestsHandler = () => null }) => {
+  ({ showMyRequestsHandler, filterHandler }) => {
     const { dispatch } = React.useContext<IStore>(Store);
     const Actions = new StoreAction(dispatch);
     const {
@@ -21,7 +24,7 @@ export const TopControllers: React.FC<TopControllersProps> = React.memo(
       setCurrentEmp,
       currentDep,
       currentEmp,
-    } = useLogic();
+    } = useLogic(filterHandler);
 
     // const []
     return (
@@ -35,7 +38,7 @@ export const TopControllers: React.FC<TopControllersProps> = React.memo(
             data={departments}
             placeholder="Департамент"
             title={(currentDep && currentDep.title) || ''}
-            selectHandler={(itm) => setCurrentDep(itm)}
+            selectHandler={setCurrentDep}
           />
           <Select
             placeholder="Співробітник"

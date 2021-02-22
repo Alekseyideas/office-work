@@ -6,11 +6,12 @@ interface ButtonProps {
   title: string | React.Component;
   onClick: () => void;
   styles?: React.CSSProperties;
+  disabled?: boolean;
 }
 
-export const ButtonDefault: React.FC<ButtonProps> = ({ title, onClick, styles }) => {
+export const ButtonDefault: React.FC<ButtonProps> = ({ title, onClick, styles, disabled }) => {
   return (
-    <BtnDefS onClick={onClick} style={styles ? styles : {}}>
+    <BtnDefS onClick={onClick} style={styles ? styles : {}} disabled={disabled}>
       {title}
     </BtnDefS>
   );
@@ -32,6 +33,11 @@ const BtnDefS = styled.button`
     background: ${COLORS.default};
     box-shadow: none;
     border: 1px solid ${COLORS.default};
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
   }
 `;
 
