@@ -6,44 +6,48 @@ import { IStore } from '../../store/types';
 import { ButtonDefault, Select } from '../ui';
 import { useLogic } from './useLogic';
 
-interface TopControllersProps {}
+interface TopControllersProps {
+  showMyRequestsHandler?: () => void;
+}
 
-export const TopControllers: React.FC<TopControllersProps> = React.memo(({}) => {
-  const { dispatch } = React.useContext<IStore>(Store);
-  const Actions = new StoreAction(dispatch);
-  const {
-    departments,
-    employees,
-    setCurrentDep,
-    setCurrentEmp,
-    currentDep,
-    currentEmp,
-  } = useLogic();
+export const TopControllers: React.FC<TopControllersProps> = React.memo(
+  ({ showMyRequestsHandler = () => null }) => {
+    const { dispatch } = React.useContext<IStore>(Store);
+    const Actions = new StoreAction(dispatch);
+    const {
+      departments,
+      employees,
+      setCurrentDep,
+      setCurrentEmp,
+      currentDep,
+      currentEmp,
+    } = useLogic();
 
-  // const []
-  return (
-    <WrapperS>
-      <BtnsWrapperS>
-        <ButtonDefault title="Створити заявку" onClick={() => Actions.setPage('createRequest')} />
-        <ButtonDefault title="Мої Заявки" onClick={() => console.log(1111)} />
-      </BtnsWrapperS>
-      <SelectsWrapperS>
-        <Select
-          data={departments}
-          placeholder="Департамент"
-          title={(currentDep && currentDep.title) || ''}
-          selectHandler={(itm) => setCurrentDep(itm)}
-        />
-        <Select
-          placeholder="Співробітник"
-          data={employees}
-          title={(currentEmp && currentEmp.title) || ''}
-          selectHandler={setCurrentEmp}
-        />
-      </SelectsWrapperS>
-    </WrapperS>
-  );
-});
+    // const []
+    return (
+      <WrapperS>
+        <BtnsWrapperS>
+          <ButtonDefault title="Створити заявку" onClick={() => Actions.setPage('createRequest')} />
+          <ButtonDefault title="Мої Заявки" onClick={showMyRequestsHandler} />
+        </BtnsWrapperS>
+        <SelectsWrapperS>
+          <Select
+            data={departments}
+            placeholder="Департамент"
+            title={(currentDep && currentDep.title) || ''}
+            selectHandler={(itm) => setCurrentDep(itm)}
+          />
+          <Select
+            placeholder="Співробітник"
+            data={employees}
+            title={(currentEmp && currentEmp.title) || ''}
+            selectHandler={setCurrentEmp}
+          />
+        </SelectsWrapperS>
+      </WrapperS>
+    );
+  }
+);
 
 const WrapperS = styled.div`
   display: flex;

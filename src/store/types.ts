@@ -20,6 +20,7 @@ export interface IUser {
 export interface IState {
   user: IUser | null;
   users: IUser[];
+  myRequests: IUser[];
   modal: IModal;
   page: 'home' | 'createRequest';
   readonly errors?: string | undefined;
@@ -50,4 +51,5 @@ export enum EActionTypes {
   SET_USERS = 'SET_USERS',
   SET_MODAL = 'SET_MODAL',
   SET_PAGE = 'SET_PAGE',
+  SET_MY_REQUESTS = 'SET_MY_REQUESTS',
 }

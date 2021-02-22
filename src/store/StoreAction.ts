@@ -34,4 +34,10 @@ export class StoreAction {
       type: EActionTypes.SET_PAGE,
       payload,
     });
+
+  setMyRequests = (payload: IState['myRequests']) =>
+    this.dispatch({
+      type: EActionTypes.SET_MY_REQUESTS,
+      payload,
+    });
 }

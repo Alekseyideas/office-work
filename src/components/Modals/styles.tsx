@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_RADIUS } from '../../utils/config';
+import { BORDER_RADIUS, COLORS } from '../../utils/config';
 import { BtnIconS } from '../ui/Buttons';
 
 export const ModalWrapperS = styled.div`
@@ -31,7 +31,7 @@ export const ModalHeaderS = styled.header`
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
-export const ModalFooterS = styled.header`
+export const ModalFooterS = styled.footer`
   padding: 20px 20px;
   display: flex;
   align-items: center;
@@ -77,4 +77,32 @@ export const ModalCloseBtnS = styled(BtnIconS)`
     width: 30px;
     height: 30px;
   }
+`;
+
+export const IconBody = styled.div<{ success?: boolean }>`
+  svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: -20px;
+    path {
+      ${({ success }) =>
+        success
+          ? `
+        fill: ${COLORS.default};`
+          : `  fill: red;`}
+    }
+  }
+`;
+
+export const LoadingWrapperS = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9;
 `;

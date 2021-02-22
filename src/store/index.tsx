@@ -5,6 +5,7 @@ import { IState, IStore } from './types';
 const initialState: IState = {
   user: null,
   users: [],
+  myRequests: [],
   loading: false,
   modal: initialModalState,
   page: 'home',

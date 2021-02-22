@@ -4,7 +4,7 @@ import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CustomToolbar } from '../components/CustomToolbar';
-import { Detailing } from '../components/Modals';
+import { Detailing, MyRequests } from '../components/Modals';
 import { TopControllers } from '../components/TopControllers';
 import { Store } from '../store';
 import { IStore, IUser } from '../store/types';
@@ -29,6 +29,7 @@ export const Home: React.FC<HomeProps> = () => {
   const { store } = React.useContext<IStore>(Store);
   const [events, setEvents] = React.useState<IEvent[]>([]);
   const [isShowDayInfo, setIsShowDayInfo] = React.useState(false);
+  const [isShowMyRequests, setIsShowMyRequests] = React.useState(false);
   const [filteredUsers, setFilteredUsers] = React.useState<IUser[]>([]);
 
   React.useEffect(() => {
@@ -70,7 +71,7 @@ export const Home: React.FC<HomeProps> = () => {
 
   return (
     <>
-      <TopControllers />
+      <TopControllers showMyRequestsHandler={() => setIsShowMyRequests(true)} />
       <div>
         <Calendar
           localizer={localizer}
@@ -93,6 +94,15 @@ export const Home: React.FC<HomeProps> = () => {
           onNavigate={(e) => console.log(e)}
         />
       </div>
+
+      {!isShowMyRequests ? null : (
+        <MyRequests
+          title="Мої заявки"
+          closeHandler={() => {
+            setIsShowMyRequests(false);
+          }}
+        />
+      )}
       {!isShowDayInfo ? null : (
         <Detailing
           data={filteredUsers}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Store } from './store';
 import { StoreAction } from './store/StoreAction';
-import { IStore } from './store/types';
+import { IStore, IUser } from './store/types';
 import { callApi } from './utils/callApi';
 
 export const useApp = () => {
-  const { dispatch } = React.useContext<IStore>(Store);
+  const { dispatch, store } = React.useContext<IStore>(Store);
   const Actions = React.useCallback(() => new StoreAction(dispatch), [dispatch]);
 
   const getUser = React.useCallback(async () => {
@@ -45,5 +45,21 @@ export const useApp = () => {
   React.useEffect(() => {
     init();
   }, [init]);
+
+  React.useEffect(() => {
+    if (
+      store.user &&
+      store.user.email &&
+      store.users &&
+      Array.isArray(store.users) &&
+      store.users[0]
+    ) {
+      const data: IUser[] = store.users.filter(
+        (userInner) => userInner.email === store.user?.email
+      );
+
+      Actions().setMyRequests(data);
+    }
+  }, [store.user, store.users, Actions]);
   return {};
 };

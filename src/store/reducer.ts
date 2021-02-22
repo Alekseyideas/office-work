@@ -33,6 +33,11 @@ export default function reducer(state: IState, action: IAction): IState {
         ...state,
         page: action.payload,
       };
+    case EActionTypes.SET_MY_REQUESTS:
+      return {
+        ...state,
+        myRequests: action.payload,
+      };
 
     default:
       return state;

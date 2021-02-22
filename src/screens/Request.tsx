@@ -3,139 +3,132 @@ import moment from 'moment';
 import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styled from 'styled-components';
+import { ErrorModal, SuccessModal } from '../components/Modals';
 import { TableCh } from '../components/svgs/TableCh';
 import { TableChSecond } from '../components/svgs/TableChSecond';
 import { ButtonDefault } from '../components/ui';
 import FirstFloorSrc from '../images/floors/firstFloor.png';
 import SecondFloorSrc from '../images/floors/secondFloor.png';
-import { BORDER_RADIUS, COLORS } from '../utils/config';
+import { Store } from '../store';
+import { StoreAction } from '../store/StoreAction';
+import { IStore } from '../store/types';
+import * as Styles from './requestStyles';
+import { useRequest } from './useRequest';
 
 registerLocale('uk', uk);
 
 interface RequestProps {}
 
-export const Request: React.FC<RequestProps> = ({}) => {
+export const Request: React.FC<RequestProps> = () => {
+  const { dispatch } = React.useContext<IStore>(Store);
+  const Actions = new StoreAction(dispatch);
   const [showFirstFloor, setShowFirstFloor] = React.useState(false);
   const [showSecondFloor, setShowSecondFloor] = React.useState(false);
   const [selected, setSelected] = React.useState(0);
   const [startDate, setStartDate] = React.useState(new Date());
+  const [loading, setLoading] = React.useState(false);
+  const [isSuccessModal, setIsSuccessModal] = React.useState(false);
+  const [isErrorModal, setIsErrorModal] = React.useState(false);
+  const { reserved, setReserved } = useRequest(startDate);
+
   const d = moment(new Date()).add(14, 'days');
 
+  const saveHandler = async () => {
+    if (!selected) return null;
+
+    try {
+      setLoading(true);
+      // const data = await callApi('post', '/', { tableId: selected, date: startDate });
+
+      console.log({ tableId: selected, date: startDate });
+      setIsSuccessModal(true);
+    } catch (e) {
+      console.log(e);
+      setIsErrorModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <WrapperS>
-      <TitleS>Заявка на роботу в офiсi</TitleS>
-      <DescS>Тут Ви можете подати заявку на роботу в офiсi</DescS>
-      <DateWrapperS>
-        <span>Виберiть дату: </span>
-        <DatePicker
-          minDate={new Date()}
-          maxDate={new Date(d.format())}
-          locale="uk"
-          dateFormat="dd.MM.yyyy"
-          selected={startDate}
-          onChange={(date) => setStartDate(date as Date)}
+    <>
+      <Styles.WrapperS>
+        <Styles.TitleS>Заявка на роботу в офiсi</Styles.TitleS>
+        <Styles.DescS>Тут Ви можете подати заявку на роботу в офiсi</Styles.DescS>
+        <Styles.DateWrapperS>
+          <span>Виберiть дату: </span>
+          <DatePicker
+            minDate={new Date()}
+            maxDate={new Date(d.format())}
+            locale="uk"
+            dateFormat="dd.MM.yyyy"
+            selected={startDate}
+            onChange={(date) => setStartDate(date as Date)}
+          />
+        </Styles.DateWrapperS>
+        <Styles.WrapperTextS>
+          <p>Оберiть вiльний стiл</p>
+        </Styles.WrapperTextS>
+        <Styles.TitleImageS>
+          <h3>Cхема розміщення столів (1 поверх)</h3>
+        </Styles.TitleImageS>
+        <Styles.ImageWrapperS>
+          <img
+            src={FirstFloorSrc}
+            alt="FirstFloorSrc"
+            loading="lazy"
+            onLoad={() => setShowFirstFloor(true)}
+          />
+          {showFirstFloor ? (
+            <TableCh clickHandler={setSelected} selected={selected} reserved={reserved} />
+          ) : null}
+        </Styles.ImageWrapperS>
+        <Styles.TitleImageS style={{ marginTop: '30px' }}>
+          <h3>Cхема розміщення столів (2 поверх)</h3>
+        </Styles.TitleImageS>
+        <Styles.ImageWrapperS>
+          <img
+            src={SecondFloorSrc}
+            alt="FirstFloorSrc"
+            loading="lazy"
+            onLoad={() => setShowSecondFloor(true)}
+          />
+          {showSecondFloor ? (
+            <TableChSecond clickHandler={setSelected} selected={selected} reserved={reserved} />
+          ) : null}
+        </Styles.ImageWrapperS>
+        <Styles.FooterWrapperS>
+          {loading ? (
+            <Styles.LoaderWrapperS>Зачекайте ...</Styles.LoaderWrapperS>
+          ) : (
+            <>
+              <ButtonDefault title="Відмінити" onClick={() => Actions.setPage('home')} />
+              <ButtonDefault title="Зберегти" onClick={saveHandler} />
+            </>
+          )}
+        </Styles.FooterWrapperS>
+      </Styles.WrapperS>
+      {isSuccessModal ? (
+        <SuccessModal
+          title="Шановний колего"
+          date={moment(startDate).format('DD.MM.YYYY')}
+          tableNumber={selected}
+          closeHandler={() => {
+            setIsSuccessModal(false);
+            Actions.setPage('home');
+          }}
         />
-      </DateWrapperS>
-
-      <ImageWrapperS>
-        <img
-          src={FirstFloorSrc}
-          alt="FirstFloorSrc"
-          loading="lazy"
-          onLoad={() => setShowFirstFloor(true)}
+      ) : null}
+      {isErrorModal ? (
+        <ErrorModal
+          title="Помилка"
+          closeHandler={() => {
+            setIsErrorModal(false);
+            setReserved((oldR) => [...oldR, selected]);
+            setSelected(0);
+          }}
         />
-        {showFirstFloor ? (
-          <TableCh clickHandler={setSelected} selected={selected} reserved={[2, 3, 4]} />
-        ) : null}
-      </ImageWrapperS>
-      <ImageWrapperS>
-        <img
-          src={SecondFloorSrc}
-          alt="FirstFloorSrc"
-          loading="lazy"
-          onLoad={() => setShowSecondFloor(true)}
-        />
-        {showSecondFloor ? (
-          <TableChSecond clickHandler={setSelected} selected={selected} reserved={[32, 3, 4]} />
-        ) : null}
-      </ImageWrapperS>
-
-      <ButtonDefault title="Ok" onClick={() => console.log(11)} />
-    </WrapperS>
+      ) : null}
+    </>
   );
 };
-
-const WrapperS = styled.div`
-  padding: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: ${BORDER_RADIUS};
-  max-width: 900px;
-`;
-
-const TitleS = styled.h4`
-  font-size: 20px;
-  margin: 0;
-`;
-const DescS = styled.h4`
-  font-size: 16px;
-  margin: 20px 0;
-  color: ${COLORS.default};
-`;
-
-const ImageWrapperS = styled.div`
-  position: relative;
-  img {
-    width: 100%;
-    height: auto;
-  }
-  svg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-  }
-
-  .tableCh {
-    cursor: pointer;
-
-    &.active {
-      cursor: default;
-      polygon,
-      rect {
-        fill: #ee4444 !important;
-      }
-    }
-    &.selected {
-      cursor: default;
-      polygon,
-      rect {
-        fill: #dfe208 !important;
-      }
-    }
-
-    &:hover {
-      polygon,
-      rect {
-        fill: #0bd648;
-      }
-    }
-    &:active {
-      polygon,
-      rect {
-        fill: #05a736;
-      }
-    }
-  }
-`;
-
-const DateWrapperS = styled.div`
-  span {
-    margin-right: 20px;
-  }
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-`;

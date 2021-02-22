@@ -14,7 +14,7 @@ function App() {
   }, [store]);
 
   const renderPage = React.useMemo(() => {
-    if (store.page !== 'createRequest') {
+    if (store.page === 'createRequest') {
       return <Screens.Request />;
     }
     return <Screens.Home />;
