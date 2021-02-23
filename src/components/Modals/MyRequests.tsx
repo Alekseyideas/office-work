@@ -80,9 +80,9 @@ export const MyRequests: React.FC<MyRequestsProps> = ({ data, closeHandler, titl
             <tbody>{body}</tbody>
           </table>
         </Styles.ModalBodyS>
-        <Styles.ModalFooterS>
+        {/* <Styles.ModalFooterS>
           <ButtonDefault title="Закрити" onClick={closeHandler} />
-        </Styles.ModalFooterS>
+        </Styles.ModalFooterS> */}
         {loading ? <Styles.LoadingWrapperS>Зачекайте ...</Styles.LoadingWrapperS> : null}
       </Styles.ModalInnerS>
     </Styles.ModalWrapperS>

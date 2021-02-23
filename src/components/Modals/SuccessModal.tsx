@@ -38,7 +38,8 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
             Якщо у Вас змінилися обставини та Ви не плануєте в цей день приходити в офіс –
             обов’язково відмініть свою заявку!
           </p>
-          <p>Не забудьте взяти робочий ноутбук та гарний настрій. До зустрічі у офісі!</p>
+          <p>Не забудьте взяти робочий ноутбук та гарний настрій.</p>
+          <p>До зустрічі у офісі!</p>
         </Styles.ModalBodyS>
         <Styles.ModalFooterS>
           <ButtonDefault title="Ok" onClick={closeHandler} />

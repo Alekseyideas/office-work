@@ -1,7 +1,6 @@
 import React from 'react';
 import { IUser } from '../../store/types';
 import { CloseIcon } from '../svgs/Close';
-import { ButtonDefault } from '../ui';
 import * as Styles from './styles';
 
 interface DetailingProps {
@@ -45,9 +44,9 @@ export const Detailing: React.FC<DetailingProps> = ({ data, closeHandler = () =>
             </tbody>
           </table>
         </Styles.ModalBodyS>
-        <Styles.ModalFooterS>
+        {/* <Styles.ModalFooterS>
           <ButtonDefault title="Закрити" onClick={closeHandler} />
-        </Styles.ModalFooterS>
+        </Styles.ModalFooterS> */}
       </Styles.ModalInnerS>
     </Styles.ModalWrapperS>
   );

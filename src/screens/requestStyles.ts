@@ -76,7 +76,7 @@ export const DateWrapperS = styled.div`
 `;
 
 export const WrapperTextS = styled.div`
-  text-align: center;
+  /* text-align: center; */
   font-size: 16px;
 `;
 
@@ -93,10 +93,10 @@ export const TitleImageS = styled.div`
 
 export const FooterWrapperS = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 30px;
   & > button {
-    margin-left: 20px;
+    margin-right: 20px;
   }
 `;
 

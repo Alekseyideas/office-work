@@ -119,9 +119,8 @@ export const Request: React.FC<RequestProps> = () => {
             <Styles.LoaderWrapperS>Зачекайте ...</Styles.LoaderWrapperS>
           ) : (
             <>
-              <ButtonDefault title="Відмінити" onClick={() => Actions.setPage('home')} />
               <ButtonDefault title="Зберегти" onClick={saveHandler} disabled={!selected} />
-              <ButtonDefault title="Показати помилку" onClick={showError} disabled={!selected} />
+              <ButtonDefault title="Закрити" onClick={() => Actions.setPage('home')} />
             </>
           )}
         </Styles.FooterWrapperS>
