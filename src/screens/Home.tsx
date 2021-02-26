@@ -102,8 +102,8 @@ export const Home: React.FC<HomeProps> = () => {
           style={{ minHeight: 700 }}
           onShowMore={() => null}
           onNavigate={(e) => {
-            const monthNum = moment(e).format('MM');
-            getUsers(monthNum);
+            const month = moment(e).startOf('month').format('YYYY-MM-DD');
+            getUsers(month);
           }}
         />
       </div>

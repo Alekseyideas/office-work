@@ -8,20 +8,24 @@ import { callApi } from '../utils/callApi';
 export const useApi = () => {
   const { dispatch } = React.useContext<IStore>(Store);
   const Actions = React.useCallback(() => new StoreAction(dispatch), [dispatch]);
-  const monthNum = moment(new Date()).format('MM');
+  const monthNum = moment(new Date()).startOf('month').format('YYYY-MM-DD');
 
-  const getUser = React.useCallback(async () => {
-    try {
-      const user = await callApi('get', '/user.json');
-      Actions().setUser(user);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [Actions]);
+  const getMyReq = React.useCallback(
+    async (email: string) => {
+      try {
+        const users = await callApi('get', '/my.json');
+        Actions().setMyRequests(users);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [Actions]
+  );
 
   const getUsers = React.useCallback(
     async (month: string = monthNum) => {
       try {
+        console.log(monthNum);
         const users = await callApi('get', `/data-${month}.json`);
         if (users && users[0]) {
           Actions().setUsers(users);
@@ -32,10 +36,10 @@ export const useApi = () => {
         console.log(error);
       }
     },
-    [Actions]
+    [Actions, monthNum]
   );
   return {
-    getUser,
+    getMyReq,
     getUsers,
   };
 };

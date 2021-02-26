@@ -1,12 +1,9 @@
 import React from 'react';
-import { ToolbarProps } from 'react-big-calendar';
 import styled from 'styled-components';
 import { Chevron } from './svgs/Chevron';
 import { BtnIconS } from './ui/Buttons';
 
-interface CustomToolbarProps extends ToolbarProps {}
-
-export const CustomToolbar: React.FC<CustomToolbarProps> = ({ onNavigate, label }) => {
+export const CustomToolbar: React.FC<any> = ({ onNavigate, label }) => {
   return (
     <WrapperS>
       <BtnLeftS onClick={() => onNavigate('PREV')}>

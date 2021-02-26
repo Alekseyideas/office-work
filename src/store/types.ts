@@ -5,6 +5,10 @@ export interface IModal {
   callBack?: () => void;
 }
 
+export interface IMe {
+  email: string;
+}
+
 export interface IUser {
   id: number;
   email: string;
@@ -18,7 +22,7 @@ export interface IUser {
 }
 
 export interface IState {
-  user: IUser | null;
+  user: IMe | null;
   users: IUser[];
   myRequests: IUser[];
   modal: IModal;

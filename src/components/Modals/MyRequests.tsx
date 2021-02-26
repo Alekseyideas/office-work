@@ -9,21 +9,38 @@ import * as Styles from './styles';
 interface MyRequestsProps {
   data?: IUser[];
   closeHandler: () => void;
-  removeHandler?: (user: IUser, position: number) => void;
   title: string;
 }
 
-export const MyRequests: React.FC<MyRequestsProps> = ({ data, closeHandler, title }) => {
+export const MyRequests: React.FC<MyRequestsProps> = ({ closeHandler, title }) => {
   const { store, dispatch } = React.useContext<IStore>(Store);
   const [loading, setLoading] = React.useState(false);
   const Actions = new StoreAction(dispatch);
 
   const removeHandler = React.useCallback(
-    async (user: IUser, position: number, data: IUser[]) => {
+    async (user: IUser, position: number) => {
       try {
         setLoading(true);
-        const newUsers = data.filter((userInner) => userInner.id !== user.id);
+        const newUsers = store.users.filter((userInner) => {
+          const d = !(
+            userInner.id === user.id &&
+            userInner.numberTable === user.numberTable &&
+            userInner.dateReserve === user.dateReserve
+          );
+          return d;
+        });
+
+        const newMyReq = store.myRequests.filter((userInner) => {
+          const d = !(
+            userInner.id === user.id &&
+            userInner.numberTable === user.numberTable &&
+            userInner.dateReserve === user.dateReserve
+          );
+          return d;
+        });
+
         Actions.setUsers(newUsers);
+        Actions.setMyRequests(newMyReq);
       } catch (e) {
         console.log(e);
       } finally {
@@ -41,7 +58,7 @@ export const MyRequests: React.FC<MyRequestsProps> = ({ data, closeHandler, titl
           <td>{itm.dateReserve}</td>
           <td>{itm.numberTable}</td>
           <td style={{ width: '100px' }}>
-            <ButtonDefault onClick={() => removeHandler(itm, i, store.users)} title={'Відмінити'} />
+            <ButtonDefault onClick={() => removeHandler(itm, i)} title={'Відмінити'} />
           </td>
         </tr>
       ));
@@ -57,7 +74,7 @@ export const MyRequests: React.FC<MyRequestsProps> = ({ data, closeHandler, titl
         </td>
       </tr>
     );
-  }, [store.myRequests, removeHandler, store.users]);
+  }, [store.myRequests, removeHandler]);
   return (
     <Styles.ModalWrapperS>
       <Styles.ModalInnerS>

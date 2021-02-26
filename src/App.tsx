@@ -5,13 +5,13 @@ import { Store } from './store';
 import { IStore } from './store/types';
 import { useApp } from './useApp';
 
-function App() {
+interface AppProps {
+  email: string;
+}
+
+export const App: React.FC<AppProps> = ({ email }) => {
   const { store } = React.useContext<IStore>(Store);
-  useApp();
-  React.useEffect(() => {
-    // console.clear();
-    console.log(store, 'store');
-  }, [store]);
+  useApp({ email });
 
   const renderPage = React.useMemo(() => {
     if (store.page === 'createRequest') {
@@ -26,6 +26,6 @@ function App() {
       {renderPage}
     </>
   );
-}
+};
 
 export default App;

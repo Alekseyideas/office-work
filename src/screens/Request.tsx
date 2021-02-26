@@ -22,7 +22,7 @@ interface RequestProps {}
 
 export const Request: React.FC<RequestProps> = () => {
   const { dispatch, store } = React.useContext<IStore>(Store);
-  const { getUsers } = useApi();
+  const { getUsers, getMyReq } = useApi();
   const Actions = new StoreAction(dispatch);
   const [showFirstFloor, setShowFirstFloor] = React.useState(false);
   const [showSecondFloor, setShowSecondFloor] = React.useState(false);
@@ -33,31 +33,22 @@ export const Request: React.FC<RequestProps> = () => {
   const [isSuccessModal, setIsSuccessModal] = React.useState(false);
   const [isErrorModal, setIsErrorModal] = React.useState(false);
   const { reserved, setReserved } = useRequest(startDate);
-
+  const [isCalOpen, setIsCalOpen] = React.useState(false);
   const d = moment(new Date()).add(14, 'days');
 
-  const showError = () => {
-    if (!selected) return null;
-    setIsErrorModal(true);
-  };
-
   const saveHandler = async () => {
-    if (!selected) return null;
+    if (!selected) return console.log('Does not selected');
+    if (!store.user || (store.user && !store.user.email)) return console.log('No email in user');
 
     try {
       setLoading(true);
-      // const data = await callApi('post', '/', { tableId: selected, date: startDate });
+      // const data = await callApi('post', '/', { tableId: selected, date: startDate }); запрос на проверку заявки
+      // if(data.isOk) ....
+      // await callApi('post', '/', { tableId: selected, date: startDate }); запрос на добавление заявки
 
-      console.log({ tableId: selected, date: startDate });
-      // Actions.setUsers([...store.users, data]) // после подключение API раскомментировать
-      Actions.setUsers([
-        ...store.users,
-        {
-          ...store.user!,
-          dateReserve: moment(startDate).format('YYYY-MM-DD'),
-          numberTable: selected,
-        },
-      ]); // после подключение API удалить
+      await getMyReq(store.user.email);
+      await getUsers();
+
       setIsSuccessModal(true);
     } catch (e) {
       console.log(e);
@@ -67,6 +58,18 @@ export const Request: React.FC<RequestProps> = () => {
     }
   };
 
+  // React.useEffect(() => {
+  //   if (isCalOpen) {
+  //     const arrs = document.querySelectorAll('.react-datepicker__day');
+  //     if (arrs) {
+  //       const hoverEvent = (itm: any) => {
+  //         console.log(itm);
+  //       };
+
+  //       arrs.forEach((itm) => itm.addEventListener('mouseover', () => hoverEvent(itm)));
+  //     }
+  //   }
+  // }, [isCalOpen]);
   return (
     <>
       <Styles.WrapperS>
@@ -81,6 +84,9 @@ export const Request: React.FC<RequestProps> = () => {
             dateFormat="dd.MM.yyyy"
             selected={startDate}
             onChange={(date) => setStartDate(date as Date)}
+            onMonthChange={(e) => console.log(e)}
+            onCalendarOpen={() => setIsCalOpen(true)}
+            onCalendarClose={() => setIsCalOpen(false)}
           />
         </Styles.DateWrapperS>
         <Styles.WrapperTextS>
@@ -90,12 +96,7 @@ export const Request: React.FC<RequestProps> = () => {
           <h3>Cхема розміщення столів (1 поверх)</h3>
         </Styles.TitleImageS>
         <Styles.ImageWrapperS>
-          <img
-            src={FirstFloorSrc}
-            alt="FirstFloorSrc"
-            loading="lazy"
-            onLoad={() => setShowFirstFloor(true)}
-          />
+          <img src={FirstFloorSrc} alt="FirstFloorSrc" onLoad={() => setShowFirstFloor(true)} />
           {showFirstFloor ? (
             <TableCh clickHandler={setSelected} selected={selected} reserved={reserved} />
           ) : null}
@@ -104,12 +105,7 @@ export const Request: React.FC<RequestProps> = () => {
           <h3>Cхема розміщення столів (2 поверх)</h3>
         </Styles.TitleImageS>
         <Styles.ImageWrapperS>
-          <img
-            src={SecondFloorSrc}
-            alt="FirstFloorSrc"
-            loading="lazy"
-            onLoad={() => setShowSecondFloor(true)}
-          />
+          <img src={SecondFloorSrc} alt="FirstFloorSrc" onLoad={() => setShowSecondFloor(true)} />
           {showSecondFloor ? (
             <TableChSecond clickHandler={setSelected} selected={selected} reserved={reserved} />
           ) : null}

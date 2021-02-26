@@ -7,7 +7,7 @@ import { StoreProvider } from './store';
 ReactDOM.render(
   <StoreProvider>
     <GlobalStyle />
-    <App />
+    <App email={'test@test.com'} />
   </StoreProvider>,
   document.getElementById('root')
 );
