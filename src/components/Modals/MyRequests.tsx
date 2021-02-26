@@ -58,7 +58,9 @@ export const MyRequests: React.FC<MyRequestsProps> = ({ closeHandler, title }) =
           <td>{itm.dateReserve}</td>
           <td>{itm.numberTable}</td>
           <td style={{ width: '100px' }}>
-            <ButtonDefault onClick={() => removeHandler(itm, i)} title={'Відмінити'} />
+            {new Date(itm.dateReserve).getTime() < new Date().getTime() ? null : (
+              <ButtonDefault onClick={() => removeHandler(itm, i)} title={'Відмінити'} />
+            )}
           </td>
         </tr>
       ));
