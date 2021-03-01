@@ -105,3 +105,13 @@ export const LoaderWrapperS = styled.div`
   width: 200px;
   text-align: center;
 `;
+
+export const WrapperNumS = styled.div`
+  display: flex;
+  align-items: center;
+
+  .numWrapper {
+    padding: 0 0 20px 20px;
+    font-size: 13px;
+  }
+`;

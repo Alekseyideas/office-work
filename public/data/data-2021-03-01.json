@@ -5,7 +5,7 @@
     "fio": "Марина Остапенко",
     "department": "Маркетинг-дирекція",
     "position": "Фахівець з актуалізації баз даних",
-    "dateReserve": "2021-03-01",
+    "dateReserve": "2021-03-02",
     "numberTable": 10,
     "typeId": 1,
     "status": 1
@@ -16,7 +16,7 @@
     "fio": "Петров Петр Владимирович",
     "department": "HR",
     "position": "Менеджер",
-    "dateReserve": "2021-03-13",
+    "dateReserve": "2021-03-02",
     "numberTable": 19,
     "typeId": 1,
     "status": 1
@@ -38,7 +38,7 @@
     "fio": "Юлія Тимощук",
     "department": "ЦП Київ",
     "position": "Фахівець з контролю якості дзвінків",
-    "dateReserve": "2021-03-25",
+    "dateReserve": "2021-03-02",
     "numberTable": 7,
     "typeId": 1,
     "status": 1
@@ -49,7 +49,7 @@
     "fio": "Галина Мельник",
     "department": "ЦП Київ",
     "position": "Провідний фахівець по роботі з клієнтами",
-    "dateReserve": "2021-03-27",
+    "dateReserve": "2021-03-14",
     "numberTable": 12,
     "typeId": 1,
     "status": 1
@@ -60,7 +60,7 @@
     "fio": "Тетяна Топольницька",
     "department": "ЦП Житомир",
     "position": "Фахівець по роботі з клієнтами",
-    "dateReserve": "2021-03-25",
+    "dateReserve": "2021-03-12",
     "numberTable": 9,
     "typeId": 1,
     "status": 1
@@ -71,7 +71,7 @@
     "fio": "Олена Павлусенко",
     "department": "ЦП Київ",
     "position": "Провідний фахівець по роботі з клієнтами",
-    "dateReserve": "2021-03-23",
+    "dateReserve": "2021-03-11",
     "numberTable": 10,
     "typeId": 1,
     "status": 1
@@ -82,7 +82,7 @@
     "fio": "Олена Павлусенко",
     "department": "ЦП Київ",
     "position": "Провідний фахівець по роботі з клієнтами",
-    "dateReserve": "2021-03-23",
+    "dateReserve": "2021-03-11",
     "numberTable": 32,
     "typeId": 1,
     "status": 1

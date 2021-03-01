@@ -32,11 +32,19 @@ export const Request: React.FC<RequestProps> = () => {
   const [loading, setLoading] = React.useState(false);
   const [isSuccessModal, setIsSuccessModal] = React.useState(false);
   const [isErrorModal, setIsErrorModal] = React.useState(false);
-  const { reserved, setReserved } = useRequest(startDate);
+  const { reserved, setReserved, getReserved } = useRequest(startDate);
   const [isCalOpen, setIsCalOpen] = React.useState(false);
   const d = moment(new Date()).add(14, 'days');
   const [canSentModal, setCanSentModal] = React.useState(false);
   const [canSent, setCanSent] = React.useState(true);
+  const [countTables, setCountTables] = React.useState(0);
+
+  React.useEffect(() => {
+    if (store.users && Array.isArray(store.users)) {
+      const itms = getReserved(store.users, startDate);
+      setCountTables(itms.length);
+    }
+  }, [startDate, store.users, getReserved]);
 
   React.useEffect(() => {
     const date = moment(startDate).format('YYYY-MM-DD');
@@ -69,37 +77,54 @@ export const Request: React.FC<RequestProps> = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   if (isCalOpen) {
-  //     const arrs = document.querySelectorAll('.react-datepicker__day');
-  //     if (arrs) {
-  //       const hoverEvent = (itm: any) => {
-  //         console.log(itm);
-  //       };
+  React.useEffect(() => {
+    if (isCalOpen) {
+      const arrs = document.querySelectorAll('.react-datepicker__day');
+      if (arrs) {
+        const hoverEvent = (itm: any) => {
+          if (!itm || (itm && itm.classList.contains('react-datepicker__day--disabled')))
+            return null;
+          const day = itm.innerText;
+          const mmYY = moment(startDate).format('YYYY-MM');
 
-  //       arrs.forEach((itm) => itm.addEventListener('mouseover', () => hoverEvent(itm)));
-  //     }
-  //   }
-  // }, [isCalOpen]);
+          const date = moment(`${mmYY}-${day}`).format();
+
+          const itms = getReserved(store.users, new Date(date));
+
+          setCountTables(itms.length);
+        };
+
+        arrs.forEach((itm) => itm.addEventListener('mouseover', () => hoverEvent(itm)));
+      }
+    }
+  }, [isCalOpen, startDate, getReserved, store.users]);
   return (
     <>
       <Styles.WrapperS>
         {/* <Styles.TitleS>Заявка на роботу в офiсi</Styles.TitleS> */}
         {/* <Styles.DescS>Тут Ви можете подати заявку на роботу в офiсi</Styles.DescS> */}
-        <Styles.DateWrapperS>
-          <span>Виберiть дату: </span>
-          <DatePicker
-            minDate={new Date(dNext)}
-            maxDate={new Date(d.format())}
-            locale="uk"
-            dateFormat="dd.MM.yyyy"
-            selected={startDate}
-            onChange={(date) => setStartDate(date as Date)}
-            onMonthChange={(e) => console.log(e)}
-            onCalendarOpen={() => setIsCalOpen(true)}
-            onCalendarClose={() => setIsCalOpen(false)}
-          />
-        </Styles.DateWrapperS>
+        <Styles.WrapperNumS>
+          <Styles.DateWrapperS>
+            <span>Виберiть дату: </span>
+            <DatePicker
+              minDate={new Date(dNext)}
+              maxDate={new Date(d.format())}
+              locale="uk"
+              dateFormat="dd.MM.yyyy"
+              selected={startDate}
+              onChange={(date) => setStartDate(date as Date)}
+              onMonthChange={(e) => console.log(e)}
+              onCalendarOpen={() => setIsCalOpen(true)}
+              onCalendarClose={() => setIsCalOpen(false)}
+            />
+          </Styles.DateWrapperS>
+          {isCalOpen ? (
+            <span className="numWrapper">
+              Зайнято <b>{countTables}</b> iз 36 столiв
+            </span>
+          ) : null}
+        </Styles.WrapperNumS>
+
         <Styles.WrapperTextS>
           <p>Оберiть вiльний стiл</p>
         </Styles.WrapperTextS>
