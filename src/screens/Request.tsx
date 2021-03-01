@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ErrorModal, SuccessModal } from '../components/Modals';
+import { AlreadyReserved, ErrorModal, SuccessModal } from '../components/Modals';
 import { TableCh } from '../components/svgs/TableCh';
 import { TableChSecond } from '../components/svgs/TableChSecond';
 import { ButtonDefault } from '../components/ui';
@@ -35,10 +35,21 @@ export const Request: React.FC<RequestProps> = () => {
   const { reserved, setReserved } = useRequest(startDate);
   const [isCalOpen, setIsCalOpen] = React.useState(false);
   const d = moment(new Date()).add(14, 'days');
+  const [canSentModal, setCanSentModal] = React.useState(false);
+  const [canSent, setCanSent] = React.useState(true);
+
+  React.useEffect(() => {
+    const date = moment(startDate).format('YYYY-MM-DD');
+    if (store.myRequests && Array.isArray(store.myRequests)) {
+      const hasDate = store.myRequests.some((itm) => itm.dateReserve === date);
+      setCanSent(!hasDate);
+    }
+  }, [startDate, store.myRequests]);
 
   const saveHandler = async () => {
     if (!selected) return console.log('Does not selected');
     if (!store.user || (store.user && !store.user.email)) return console.log('No email in user');
+    if (!canSent) return setCanSentModal(true);
 
     try {
       setLoading(true);
@@ -143,6 +154,7 @@ export const Request: React.FC<RequestProps> = () => {
           }}
         />
       ) : null}
+      {canSentModal ? <AlreadyReserved closeHandler={() => setCanSentModal(false)} /> : null}
     </>
   );
 };

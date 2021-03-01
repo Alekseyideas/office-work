@@ -35,10 +35,11 @@ export const Home: React.FC<HomeProps> = () => {
     const cash: { [key: string]: number } = {};
 
     data.forEach((user) => {
-      if (!cash[String(user.dateReserve)]) {
-        cash[String(user.dateReserve)] = 1;
+      const key = moment(user.dateReserve).format('YYYY-MM-DD');
+      if (!cash[String(key)]) {
+        cash[String(key)] = 1;
       } else {
-        cash[String(user.dateReserve)] += 1;
+        cash[String(key)] += 1;
       }
     });
 
@@ -69,9 +70,11 @@ export const Home: React.FC<HomeProps> = () => {
 
   const clickEventHandler = (event: IEvent) => {
     const users =
-      (filteredUsers[0] &&
-        filteredUsers.filter((user) => String(user.dateReserve) === String(event.idDate))) ||
-      [];
+      filteredUsers[0] &&
+      filteredUsers.filter((user) => {
+        const key = moment(user.dateReserve).format('YYYY-MM-DD');
+        return key === String(event.idDate);
+      });
     setSelectedDayUsers(users);
     setIsShowDayInfo(true);
   };

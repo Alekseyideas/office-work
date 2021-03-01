@@ -1,3 +1,4 @@
+export { AlreadyReserved } from './AlreadyReserved';
 export { Detailing } from './Detailing';
 export { ErrorModal } from './ErrorModal';
 export { MyRequests } from './MyRequests';
