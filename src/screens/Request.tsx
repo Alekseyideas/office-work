@@ -10,11 +10,13 @@ import { ButtonDefault } from '../components/ui';
 import { useApi } from '../hooks/useApi';
 import FirstFloorSrc from '../images/floors/firstFloor.png';
 import SecondFloorSrc from '../images/floors/secondFloor.png';
+import shNew from '../images/shNew.svg';
 import { Store } from '../store';
 import { StoreAction } from '../store/StoreAction';
 import { IStore } from '../store/types';
 import * as Styles from './requestStyles';
 import { useRequest } from './useRequest';
+import {Tables} from "../components/svgs/Tables";
 
 registerLocale('uk', uk);
 
@@ -129,23 +131,16 @@ export const Request: React.FC<RequestProps> = () => {
           <p>Оберiть вiльний стiл</p>
         </Styles.WrapperTextS>
         <Styles.TitleImageS>
-          <h3>Cхема розміщення столів (1 поверх)</h3>
+          <h3>Cхема розміщення столів</h3>
         </Styles.TitleImageS>
         <Styles.ImageWrapperS>
-          <img src={FirstFloorSrc} alt="FirstFloorSrc" onLoad={() => setShowFirstFloor(true)} />
+          <img src={shNew} alt="FirstFloorSrc" onLoad={() => setShowFirstFloor(true)} />
           {showFirstFloor ? (
-            <TableCh clickHandler={setSelected} selected={selected} reserved={reserved} />
+            <Tables clickHandler={setSelected} selected={selected} reserved={reserved} />
+            // <TableCh clickHandler={setSelected} selected={selected} reserved={reserved} />
           ) : null}
         </Styles.ImageWrapperS>
-        <Styles.TitleImageS style={{ marginTop: '30px' }}>
-          <h3>Cхема розміщення столів (2 поверх)</h3>
-        </Styles.TitleImageS>
-        <Styles.ImageWrapperS>
-          <img src={SecondFloorSrc} alt="FirstFloorSrc" onLoad={() => setShowSecondFloor(true)} />
-          {showSecondFloor ? (
-            <TableChSecond clickHandler={setSelected} selected={selected} reserved={reserved} />
-          ) : null}
-        </Styles.ImageWrapperS>
+
         <Styles.FooterWrapperS>
           {loading ? (
             <Styles.LoaderWrapperS>Зачекайте ...</Styles.LoaderWrapperS>

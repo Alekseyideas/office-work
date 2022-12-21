@@ -8,7 +8,7 @@ const initialState: IState = {
   myRequests: [],
   loading: false,
   modal: initialModalState,
-  page: 'home',
+  page: 'createRequest',
 };
 
 export const Store = React.createContext<IStore>({
